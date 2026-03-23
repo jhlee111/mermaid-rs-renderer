@@ -357,6 +357,12 @@ pub fn render_svg(layout: &Layout, theme: &Theme, config: &LayoutConfig) -> Stri
 
     for subgraph in &layout.subgraphs {
         let label_empty = subgraph.label.trim().is_empty();
+        let subgraph_nodes_str = subgraph.nodes.join(",");
+        svg.push_str(&format!(
+            "<g class=\"cluster\" data-subgraph-label=\"{}\" data-subgraph-nodes=\"{}\">",
+            escape_xml(&subgraph.label),
+            escape_xml(&subgraph_nodes_str),
+        ));
         if is_state {
             let sub_fill = subgraph.style.fill.as_ref().unwrap_or(&theme.primary_color);
             let sub_stroke = subgraph
@@ -499,6 +505,7 @@ pub fn render_svg(layout: &Layout, theme: &Theme, config: &LayoutConfig) -> Stri
                 ));
             }
         }
+        svg.push_str("</g>");
     }
 
     let overlay_flowchart = layout.kind == crate::ir::DiagramKind::Flowchart;
