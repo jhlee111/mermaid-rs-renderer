@@ -1279,6 +1279,12 @@ pub fn render_svg(layout: &Layout, theme: &Theme, config: &LayoutConfig) -> Stri
             if node.anchor_subgraph.is_some() {
                 continue;
             }
+            let node_label_text = node.label.lines.join(" ");
+            svg.push_str(&format!(
+                "<g class=\"node\" data-node-id=\"{}\" data-node-label=\"{}\">",
+                escape_xml(&node.id),
+                escape_xml(&node_label_text),
+            ));
             if let Some(link) = node.link.as_ref() {
                 svg.push_str(&format!("<a {}>", link_attrs(link)));
                 if let Some(title) = link.title.as_deref() {
@@ -1370,6 +1376,7 @@ pub fn render_svg(layout: &Layout, theme: &Theme, config: &LayoutConfig) -> Stri
             if node.link.is_some() {
                 svg.push_str("</a>");
             }
+            svg.push_str("</g>");
         }
 
         if overlay_flowchart && !overlay_arrows.is_empty() {
@@ -1436,6 +1443,12 @@ pub fn render_svg(layout: &Layout, theme: &Theme, config: &LayoutConfig) -> Stri
             if node.anchor_subgraph.is_some() {
                 continue;
             }
+            let node_label_text = node.label.lines.join(" ");
+            svg.push_str(&format!(
+                "<g class=\"node\" data-node-id=\"{}\" data-node-label=\"{}\">",
+                escape_xml(&node.id),
+                escape_xml(&node_label_text),
+            ));
             if let Some(link) = node.link.as_ref() {
                 svg.push_str(&format!("<a {}>", link_attrs(link)));
                 if let Some(title) = link.title.as_deref() {
@@ -1470,6 +1483,7 @@ pub fn render_svg(layout: &Layout, theme: &Theme, config: &LayoutConfig) -> Stri
             if node.link.is_some() {
                 svg.push_str("</a>");
             }
+            svg.push_str("</g>");
         }
         for footbox in seq_data.map(|s| s.footboxes.as_slice()).unwrap_or_default() {
             if let Some(link) = footbox.link.as_ref() {
